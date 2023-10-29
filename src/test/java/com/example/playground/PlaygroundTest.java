@@ -19,9 +19,15 @@ public class PlaygroundTest {
     private Kid bob;
     Playground playground;
     PlaySite bigSite;
+    ApplicationConfig applicationConfig;
 
     @BeforeEach
     public void setUp() {
+        MockitoAnnotations.initMocks(this);
+        applicationConfig = Mockito.mock(ApplicationConfig.class);
+        ApplicationConfig.setInstance(applicationConfig);
+        when(applicationConfig.getToday()).thenReturn(LocalDate.of(2023, 1, 1));
+
         createPlayground();
         bob = new Kid("Bob");
     }
@@ -123,11 +129,6 @@ public class PlaygroundTest {
 
     @Test
     public void testVisitorsForDate() {
-        MockitoAnnotations.initMocks(this);
-        ApplicationConfig applicationConfig = Mockito.mock(ApplicationConfig.class);
-        ApplicationConfig.setInstance(applicationConfig);
-        when(applicationConfig.getToday()).thenReturn(LocalDate.of(2023, 1, 1));
-
         bigSite.addOrQueueKid(bob);
         assertEquals(1, playground.getVisitorsForToday());
 
